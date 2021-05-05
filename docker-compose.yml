@@ -1,0 +1,35 @@
+version: '3'
+
+services: 
+    
+    #mysql Server
+    data_base:
+        image: mysql
+        container_name: data_base
+        restart: unless-stopped
+        tty: true
+        ports: 
+            - "3306:3306"
+        environment: 
+            MYSQL_DATABASE: aplicacao
+            MYSQL_ROOT_PASSWORD: root
+        networks: 
+            - app-network
+
+    #nginx service
+    webserver:
+        image: nginx:alpine
+        container_name: webserver
+        restart: unless-stopped
+        tty: true
+        ports: 
+            - "80:80"
+        depends_on: 
+            - data_base
+        networks: 
+            - app-network
+
+#Docker network//
+networks:
+    app-network:
+        driver: bridge
